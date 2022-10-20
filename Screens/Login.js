@@ -1,24 +1,32 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, Alert,TouchableOpacity} from "react-native";
 import React from "react";
 import CheckBox  from "expo-checkbox"
-const Login = () => {
+import AppLoading from "expo-app-loading";
+const Login = ({navigataion}) => {
+  const [userName,setUserName]=("")
+  const [password,setPassword]=("")
     const [agree,setAgree] =React.useState(false)
+
+    const handleSubmit=()=>{
+     <AppLoading/>
+      return (userName==="" || password==="") ? Alert.alert("Invalid UserName | password"):navigataion.navigate("home",{name:`${userName}`})
+    }
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.mainHeader}>Login Here!!</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.labels}>Enter Your Name</Text>
-        <TextInput style={styles.inputStyle} autoCapitalize="none" autoCorrect={false}/>
+        <TextInput style={styles.inputStyle} value={userName} onChangeText={(data)=>setUserName(data)} autoCapitalize="none" autoCorrect={false}/>
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.labels}>Enter Your Password</Text>
-        <TextInput style={styles.inputStyle} secureTextEntry={true} autoCapitalize="none" autoCorrect={false}/>
+        <TextInput value={password} style={styles.inputStyle} onChangeText={(data)=>setPassword(data)} secureTextEntry={true} autoCapitalize="none" autoCorrect={false}/>
       </View>
 <View >
-<CheckBox value={agree} on onChange={()=>setAgree(true)} color={agree ? "#4630EB":undefined}/>
+<CheckBox value={agree} on onChange={()=>setAgree(!agree)} color={agree ? "#4630EB":undefined}/>
 <Text> I agree</Text>
 </View>
-<TouchableOpacity style={{backgroundColor:agree? "#4630EB":"grey"}}>
+<TouchableOpacity style={{backgroundColor:agree? "#4630EB":"grey"}} disabled={!agree} onPress={handleSubmit}>
     <Text>Login</Text>
     </TouchableOpacity>
     </View>
@@ -50,7 +58,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
     lineHeight: 25,
-    fontFamily: "regular",
   },
   inputStyle: {
     borderWidth: 1,
@@ -58,7 +65,6 @@ const styles = StyleSheet.create({
     paddingHorizontal:15,
     paddingVertical:7,
     borderRadius:1,
-    FontFamily:"regular",
     fontSize:18
   },
 });
